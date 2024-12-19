@@ -1,4 +1,5 @@
 ^\.git
+\.orig$
 \.DS_Store
 \.class$
 part2$

@@ -1,0 +1,8 @@
+Benchmarks
+
+Performance on MacMini M2:
+   Compiled Python (6.51s)
+      $ codon build part2.py && time ./part2
+   
+   Python (58.07s)
+      $ time python3 part2.py

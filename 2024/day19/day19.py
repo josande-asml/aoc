@@ -1,42 +1,47 @@
 #!/usr/bin/env python3
 
-import copy
-
-# Try all possible towels to match the first 'l' characters
-# of the pattern. Prepend the towel with a base pattern to
-# come to the exact length. Keep track of the number of ways
-# to match a certain pattern length
+# Try all possible towels to match the first 'n' characters
+# of the pattern. If a towel is less than 'n' characters,
+# then we can prefix the other characters using the 
+# combinations we found earlier for that amount of characters.
+#
+# For example when counting the number of combinations for
+# a pattern of length 7, we try all possible towels at the
+# end of it:
+#
+#    pattern: rwrgbwu
+#    towel:        wu
+#    combis:  <-5->
+#
+#    pattern: rwrgbwu
+#    towel:      gbwu
+#    combis:  <3>
 
 def findAllCombinations(pattern, towels):
    nrcombis = [ 0 for i in range(len(pattern)+1) ]
-   for l in range(1, len(pattern)+1):
+   for n in range(1, len(pattern)+1):
       count = 0
       for towel in towels:
-         if len(towel) > l: continue
-         if pattern[l-len(towel):l] == towel:
-            base = l-len(towel)
-            if base == 0:
+         if len(towel) > n: continue
+         if pattern[n-len(towel):n] == towel:
+            prefix = n-len(towel)
+            if prefix == 0:
                count += 1
             else:
-               count += nrcombis[base]
-      nrcombis[l] = count
-
-   #print(pattern, nrcombis[len(pattern)], nrcombis)
+               count += nrcombis[prefix]
+      nrcombis[n] = count
    return nrcombis[len(pattern)]
 
 
 def process(filename):
    f = open(filename)
-
-   # Load all available towels
    towels = [ x.strip() for x in f.readline().split(',')]
 
-   # Try to make all patterns      
-   f.readline()
    nrPossible = 0
    nrCombis = 0
    for line in f:
       pattern = line.strip()
+      if len(pattern) == 0: continue
       count = findAllCombinations(pattern, towels)
       if count > 0:
          nrPossible += 1
@@ -45,6 +50,6 @@ def process(filename):
    print(filename, nrPossible, nrCombis)
    return (nrPossible, nrCombis)
 
+
 assert(process('example.txt') == (6, 16))
 assert(process('input.txt') == (272, 1041529704688380))
-

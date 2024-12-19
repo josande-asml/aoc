@@ -7,11 +7,11 @@ Check day 7 for an interesting benchmark:
 
 ```
 Performance on MacMini M2:
+   C (1.14s)
+      $ gcc part2.c -O3 -o part2 && time ./part2
+   
    Azul Java (1.63s)
       $ javac part2.java && time java part2
-
-   C (1.98s)
-      $ gcc part2.c -o part2 && time ./part2
 
    Compiled Python (2.86s)
       $ codon build part2.py && time ./part2

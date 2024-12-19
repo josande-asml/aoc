@@ -1,0 +1,606 @@
+<!DOCTYPE html> <html lang=en-us style><meta charset=utf-8><head>
+<title>Day 10 - Advent of Code 2024</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@300');
+
+body {
+  background: #0f0f23; /*337 x 5*/
+  color: #cccccc;
+  font-family: "Source Code Pro", monospace;
+  font-weight: 300;
+  font-size: 14pt;
+  min-width: 60em;
+}
+img { border:0; }
+a { outline:0; }
+main, figure, figcaption { display:block; }
+pre, code { font-family: "Source Code Pro", monospace; }
+header, main {
+  -webkit-text-size-adjust: none;
+}
+
+a {
+  text-decoration: none;
+  color: #009900;
+}
+a:hover, a:focus {
+  color: #99ff99;
+}
+h1, h2 {
+  font-size: 1em;
+  font-weight: normal;
+}
+code {
+  position: relative;
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+}
+code:before {
+  z-index: -1;
+  content: "";
+  position: absolute;
+  display: block;
+  left: -2px;
+  right: -2px;
+  top: 3px;
+  bottom: 0px;
+  border: 1px solid #333340;
+  background: #10101a;
+}
+pre.wrap {
+  max-width: 100%;
+  white-space: pre-wrap;
+}
+
+.quiet {
+  opacity: .5;
+}
+p.wrap {
+  width: 45em;
+}
+
+.hidden-until-hover {
+  border: 1px dotted gray;
+  overflow: hidden;
+  position: relative;
+  padding: 0 .5em;
+  transition: border-color 0s linear 5s;
+}
+.hidden-until-hover:before {
+  content: "(hover to reveal)";
+  position: absolute;
+  opacity: .5;
+  text-align: center;
+  left: 0;
+  top: 0;
+  width: 100%;
+  overflow: hidden;
+  transition: width 0s linear 5s;
+}
+.hidden-until-hover > * {
+  visibility: hidden;
+  transition: visibility 0s linear 5s;
+}
+.hidden-until-hover:hover {
+  transition: border-color 0s linear 1s;
+  border-color: transparent;
+}
+.hidden-until-hover:hover:before {
+  content: "( keep hovering )";
+  transition: width 0s linear 1s;
+  width: 0;
+}
+.hidden-until-hover:hover > * {
+  transition: visibility 0s linear 1s;
+  visibility: visible;
+}
+
+.warning:not(.warning-active) {
+  transition: color 1s, opacity 1s;
+}
+.warning-active {
+  color: #ff0000;
+  opacity: 1;
+}
+
+.star-count {
+  color: #ffff66;
+}
+.supporter-badge {
+  color: #ffff66;
+}
+a.supporter-badge:hover, a.supporter-badge:focus {
+  text-decoration: none;
+  color: #ffffcc;
+  text-shadow: 0 0 5px #ffff66;
+}
+.sponsor-badge {
+  color: #79a2d8;
+}
+a.sponsor-badge:hover, a.sponsor-badge:focus {
+  text-decoration: none;
+  color: #ccdbed;
+  text-shadow: 0 0 5px #79a2d8;
+}
+
+#sidebar {
+  width: 200px;
+  float: right;
+  margin: 0 15px 2em 2em;
+  position: relative;
+  z-index: 10;
+}
+#sponsor {
+  margin-bottom: 2.5em;
+}
+
+header {
+  white-space: nowrap;
+  cursor: default;
+  z-index: 100;
+  margin-bottom: 2em;
+}
+header h1 {
+  display: inline-block;
+  margin: 0;
+  padding-right: 1em;
+}
+header h1 a, header h1 span {
+  display: inline-block;
+  text-decoration: none;
+  color: #00cc00;
+  text-shadow: 0 0 2px #00cc00, 0 0 5px #00cc00;
+}
+header h1 a:hover, header h1 a:focus {
+  color: #99ff99;
+  text-shadow: 0 0 2px #99ff99, 0 0 5px #99ff99;
+}
+header h1.title-event .title-event-wrap {
+  opacity: .33;
+  white-space: pre;
+}
+header .user {
+  display: inline-block;
+  padding-left: 1em;
+}
+header nav {
+  display: inline-block;
+}
+header nav ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  display: inline-block;
+}
+header nav li {
+  display: inline-block;
+  padding: 0 .6em;
+}
+header nav a {
+  display: inline-block;
+  text-decoration: none;
+  outline: none;
+}
+
+input[type="text"], textarea {
+  background: transparent;
+  color: inherit;
+  border: 1px solid #666666;
+  background: #10101a;
+  padding: 0 2px;
+  font-family: inherit;
+  font-size: inherit;
+  margin: 0;
+}
+textarea {
+  vertical-align: top;
+}
+
+label img {
+  vertical-align: bottom;
+  position: relative;
+  top: -3px;
+  margin-right: .3em;
+}
+input[type="radio"] { display: none; }
+input[type="radio"] ~ span {
+  cursor: pointer;
+  display: inline-block;
+}
+input[type="radio"] ~ span:before {
+  content: "( ) ";
+}
+input[type="radio"] ~ span:hover, input[type="radio"] ~ span:focus {
+  background-color: #19193b;
+}
+input[type="radio"]:checked ~ span {
+  color: #ffffff;
+}
+input[type="radio"]:checked ~ span:before {
+  content: "(O) ";
+}
+input[type="checkbox"] { display: none; }
+input[type="checkbox"] ~ span {
+  cursor: pointer;
+  display: inline-block;
+}
+input[type="checkbox"] ~ span:before {
+  content: "[ ] ";
+}
+input[type="checkbox"] ~ span:hover, input[type="checkbox"] ~ span:focus {
+  background-color: #19193b;
+}
+input[type="checkbox"]:checked ~ span {
+  color: #ffffff;
+}
+input[type="checkbox"]:checked ~ span:before {
+  content: "[X] ";
+}
+input[type="checkbox"]:disabled ~ span {
+  opacity: .3;
+  cursor: default;
+}
+input[type="checkbox"]:disabled ~ span:before {
+  content: "[-] ";
+}
+input[type="checkbox"]:disabled ~ span:hover {
+  background-color: transparent;
+}
+
+
+input[type="submit"] {
+  background: transparent;
+  border: 0;
+  font-family: inherit;
+  font-size: inherit;
+  margin: 0;
+  padding: 0;
+  color: #009900;
+  cursor: pointer;
+}
+input[type="submit"]:hover, input[type="submit"]:focus {
+  color: #99ff99;
+}
+*::-moz-focus-inner {
+  padding: 0;
+  border: 0
+}
+
+article {
+  width: 45em;
+  margin-bottom: 2em;
+  margin-top: 2em;
+}
+article:first-of-type {
+  margin-top: 0;
+}
+article h2 {
+  color: #ffffff;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  white-space: nowrap;
+}
+article h2 + * {
+  margin-top: 0;
+}
+article em {
+  color: #ffffff;
+  font-style: normal;
+  text-shadow: 0 0 5px #ffffff;
+}
+article em.star {
+  color: #ffff66;
+  font-style: normal;
+  text-shadow: 0 0 5px #ffff66;
+}
+article a {
+  white-space: nowrap;
+}
+article .aside {
+  opacity: .6;
+}
+article ul {
+  list-style-type: none;
+  padding: 0;
+}
+article li {
+  padding-left: 2.5em;
+  position: relative;
+}
+article li:before {
+  content: "\00a0\00a0-\00a0";
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+.day-success {
+  color: #ffff66;
+  text-shadow: 0 0 5px #ffff66;
+}
+
+form#settings input[type="radio"] ~ span {
+  min-width: 30em;
+}
+form#settings input[type="checkbox"] ~ span {
+  min-width: 30em;
+}
+
+.share {
+  color: #009900;
+  cursor: default;
+  transition: color .2s 1s;
+  /*position: relative;*/
+}
+.share:hover, .share:focus-within {
+  color: #aaffaa;
+  transition: color .2s 0s;
+}
+.share .share-content {
+  /*position: absolute; background: #0f0f23;*/
+  display: inline-block;
+  vertical-align: text-bottom;
+  white-space: nowrap;
+  overflow: hidden;
+  max-width: 0;
+  transition: max-width .2s 1s;
+}
+.share .share-content:before {
+  content: "\00a0";
+}
+.share .share-content:after {
+  /*content: "]";*/
+}
+.share:hover .share-content, .share:focus-within .share-content {
+  max-width: 45em;
+  transition: max-width .2s 0s;
+}
+
+.puzzle-input {
+  border: 1px solid #999999;
+  background: #333333;
+  color: #ffffff;
+  text-shadow: 0 0 5px #ffffff;
+}
+
+.calendar {
+  cursor: default;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: -moz-none;
+  -o-user-select: none;
+  user-select: none;
+}
+.calendar > span {
+  color: #333333;
+}
+.calendar > a {
+  text-decoration: none;
+  color: #666666;
+  outline: none;
+  cursor: default;
+}
+.calendar a:hover, .calendar a:focus {
+  background-color: #1e1e46;
+  background-color: rgba(119,119,165,.2);
+  cursor: pointer;
+}
+#calendar-countdown {
+  padding-left: .5em;
+  color: #cccccc;
+}
+.calendar .calendar-day { color: #666666; }
+.calendar a .calendar-day { color: #cccccc; }
+.calendar a .calendar-mark-complete,
+.calendar a .calendar-mark-verycomplete { visibility: hidden; }
+.calendar a.calendar-complete     .calendar-mark-complete,
+.calendar a.calendar-verycomplete .calendar-mark-complete { visibility: visible; color: #ffff66; }
+.calendar a.calendar-verycomplete .calendar-mark-verycomplete { visibility: visible; color: #ffff66; }
+
+.calendar .calendar-day-new               { animation: anim-day-new 5s; }
+.calendar .calendar-day-new .calendar-day { animation: anim-day-new-day 5s; }
+@keyframes anim-day-new {
+  0%   { color: #333333; text-shadow: 0 0 5px transparent; }
+  25%  { color: #ffffff; text-shadow: 0 0 5px #ffffff; }
+  100% { color: #666666; text-shadow: 0 0 5px transparent; }
+}
+@keyframes anim-day-new-day {
+  0%   { color: #666666; text-shadow: 0 0 5px transparent; }
+  25%  { color: #ffffff; text-shadow: 0 0 5px #ffffff; }
+  100% { color: #cccccc; text-shadow: 0 0 5px transparent; }
+}
+
+.eventlist-event {
+  white-space: pre;
+}
+
+.stats > span, .stats > span .stats-firstonly, .stats > span .stats-both {
+  color: #666666;
+}
+.stats > a {
+  color: #cccccc;
+  min-width: 35em;
+  display: inline-block;
+}
+.stats > a:hover, .stats > a:focus {
+  background-color: #1e1e46;
+}
+.stats-firstonly {
+  color: #9999cc;
+}
+.stats-both {
+  color: #ffff66;
+}
+
+.leaderboard-daylinks {
+  cursor: default;
+}
+.leaderboard-daylinks-selected {
+  color: #ffffff;
+  text-shadow: 0 0 5px #ffffff;
+}
+.leaderboard-daydesc-first {
+  color: #9999cc;
+}
+.leaderboard-daydesc-both {
+  color: #ffff66;
+}
+.leaderboard-entry {
+  white-space: pre;
+}
+.leaderboard-entry .leaderboard-totalscore {
+  color: #ffffff;
+}
+.leaderboard-anon {
+  opacity: .6;
+}
+.leaderboard-userphoto {
+  display: inline-block;
+  height: 20px;
+  width: 20px;
+  margin: 0 .5em;
+  text-align: center;
+}
+.leaderboard-userphoto img {
+  height: 20px;
+  max-width: 20px;
+  vertical-align: middle;
+  position: relative;
+  top: -2px;
+}
+.leaderboard-time {
+  opacity: .5;
+}
+
+.privboard-row {
+  white-space: pre;
+}
+.privboard-name {
+  vertical-align: text-bottom;
+}
+.privboard-days > span    { display: inline-block; color: #333333; }
+.privboard-days > a       { display: inline-block; }
+.privboard-star-locked    { visibility: hidden; }
+.privboard-star-unlocked  { color: #333333; }
+.privboard-star-firstonly { color: #9999cc; }
+.privboard-star-both      { color: #ffff66; }
+.privboard-delbtn { opacity:.33; }
+.privboard-row:hover .privboard-delbtn { opacity:1; }
+
+.sponsors {
+  width: 46em; /*76 characters*/
+}
+.sponsor {
+  margin: 1em 0;
+}
+
+</style>
+</head>
+<body>
+<main>
+<article class=day-desc><h2>--- Day 10: Hoof It ---</h2><p>You all arrive at a <a href=https://adventofcode.com/2023/day/15>Lava Production Facility</a> on a floating island in the sky. As the others begin to search the massive industrial complex, you feel a small nose boop your leg and look down to discover a <span title="i knew you would come back">reindeer</span> wearing a hard hat.</p>
+<p>The reindeer is holding a book titled "Lava Island Hiking Guide". However, when you open the book, you discover that most of it seems to have been scorched by lava! As you're about to ask how you can help, the reindeer brings you a blank <a href=https://en.wikipedia.org/wiki/Topographic_map target=_blank>topographic map</a> of the surrounding area (your puzzle input) and looks up at you excitedly.</p>
+<p>Perhaps you can help fill in the missing hiking trails?</p>
+<p>The topographic map indicates the <em>height</em> at each position using a scale from <code>0</code> (lowest) to <code>9</code> (highest). For example:</p>
+<pre><code>0123
+1234
+8765
+9876
+</code></pre>
+<p>Based on un-scorched scraps of the book, you determine that a good hiking trail is <em>as long as possible</em> and has an <em>even, gradual, uphill slope</em>. For all practical purposes, this means that a <em>hiking trail</em> is any path that starts at height <code>0</code>, ends at height <code>9</code>, and always increases by a height of exactly 1 at each step. Hiking trails never include diagonal steps - only up, down, left, or right (from the perspective of the map).</p>
+<p>You look up from the map and notice that the reindeer has helpfully begun to construct a small pile of pencils, markers, rulers, compasses, stickers, and other equipment you might need to update the map with hiking trails.</p>
+<p>A <em>trailhead</em> is any position that starts one or more hiking trails - here, these positions will always have height <code>0</code>. Assembling more fragments of pages, you establish that a trailhead's <em>score</em> is the number of <code>9</code>-height positions reachable from that trailhead via a hiking trail. In the above example, the single trailhead in the top left corner has a score of <code>1</code> because it can reach a single <code>9</code> (the one in the bottom left).</p>
+<p>This trailhead has a score of <code>2</code>:</p>
+<pre><code>...0...
+...1...
+...2...
+6543456
+7.....7
+8.....8
+9.....9
+</code></pre>
+<p>(The positions marked <code>.</code> are impassable tiles to simplify these examples; they do not appear on your actual topographic map.)</p>
+<p>This trailhead has a score of <code>4</code> because every <code>9</code> is reachable via a hiking trail except the one immediately to the left of the trailhead:</p>
+<pre><code>..90..9
+...1.98
+...2..7
+6543456
+765.987
+876....
+987....
+</code></pre>
+<p>This topographic map contains <em>two</em> trailheads; the trailhead at the top has a score of <code>1</code>, while the trailhead at the bottom has a score of <code>2</code>:</p>
+<pre><code>10..9..
+2...8..
+3...7..
+4567654
+...8..3
+...9..2
+.....01
+</code></pre>
+<p>Here's a larger example:</p>
+<pre><code>89010123
+78121874
+87430965
+96549874
+45678903
+32019012
+01329801
+10456732
+</code></pre>
+<p>This larger example has 9 trailheads. Considering the trailheads in reading order, they have scores of <code>5</code>, <code>6</code>, <code>5</code>, <code>3</code>, <code>1</code>, <code>3</code>, <code>5</code>, <code>3</code>, and <code>5</code>. Adding these scores together, the sum of the scores of all trailheads is <code><em>36</em></code>.</p>
+<p>The reindeer gleefully carries over a protractor and adds it to the pile. <em>What is the sum of the scores of all trailheads on your topographic map?</em></p>
+</article>
+
+<article class=day-desc><h2 id=part2>--- Part Two ---</h2><p>The reindeer spends a few minutes reviewing your hiking trail map before realizing something, disappearing for a few minutes, and finally returning with yet another slightly-charred piece of paper.</p>
+<p>The paper describes a second way to measure a trailhead called its <em>rating</em>. A trailhead's rating is the <em>number of distinct hiking trails</em> which begin at that trailhead. For example:</p>
+<pre><code>.....0.
+..4321.
+..5..2.
+..6543.
+..7..4.
+..8765.
+..9....
+</code></pre>
+<p>The above map has a single trailhead; its rating is <code>3</code> because there are exactly three distinct hiking trails which begin at that position:</p>
+<pre><code>.....0.   .....0.   .....0.
+..4321.   .....1.   .....1.
+..5....   .....2.   .....2.
+..6....   ..6543.   .....3.
+..7....   ..7....   .....4.
+..8....   ..8....   ..8765.
+..9....   ..9....   ..9....
+</code></pre>
+<p>Here is a map containing a single trailhead with rating <code>13</code>:</p>
+<pre><code>..90..9
+...1.98
+...2..7
+6543456
+765.987
+876....
+987....
+</code></pre>
+<p>This map contains a single trailhead with rating <code>227</code> (because there are <code>121</code> distinct hiking trails that lead to the <code>9</code> on the right edge and <code>106</code> that lead to the <code>9</code> on the bottom edge):</p>
+<pre><code>012345
+123456
+234567
+345678
+4.6789
+56789.
+</code></pre>
+<p>Here's the larger example from before:</p>
+<pre><code>89010123
+78121874
+87430965
+96549874
+45678903
+32019012
+01329801
+10456732
+</code></pre>
+<p>Considering its trailheads in reading order, they have ratings of <code>20</code>, <code>24</code>, <code>10</code>, <code>4</code>, <code>1</code>, <code>4</code>, <code>5</code>, <code>8</code>, and <code>5</code>. The sum of all trailhead ratings in this larger example topographic map is <code><em>81</em></code>.</p>
+<p>You're not sure how, but the reindeer seems to have crafted some tiny flags out of toothpicks and bits of paper and is using them to mark trailheads on your topographic map. <em>What is the sum of the ratings of all trailheads?</em></p>
+</article>
+</main>
+</body>
+</html>

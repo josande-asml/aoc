@@ -1,0 +1,891 @@
+<!DOCTYPE html> <html lang=en-us style><meta charset=utf-8><head>
+<title>Day 15 - Advent of Code 2024</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@300');
+
+body {
+  background: #0f0f23; /*337 x 5*/
+  color: #cccccc;
+  font-family: "Source Code Pro", monospace;
+  font-weight: 300;
+  font-size: 14pt;
+  min-width: 60em;
+}
+img { border:0; }
+a { outline:0; }
+main, figure, figcaption { display:block; }
+pre, code { font-family: "Source Code Pro", monospace; }
+header, main {
+  -webkit-text-size-adjust: none;
+}
+
+a {
+  text-decoration: none;
+  color: #009900;
+}
+a:hover, a:focus {
+  color: #99ff99;
+}
+h1, h2 {
+  font-size: 1em;
+  font-weight: normal;
+}
+code {
+  position: relative;
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+}
+code:before {
+  z-index: -1;
+  content: "";
+  position: absolute;
+  display: block;
+  left: -2px;
+  right: -2px;
+  top: 3px;
+  bottom: 0px;
+  border: 1px solid #333340;
+  background: #10101a;
+}
+pre.wrap {
+  max-width: 100%;
+  white-space: pre-wrap;
+}
+
+.quiet {
+  opacity: .5;
+}
+p.wrap {
+  width: 45em;
+}
+
+.hidden-until-hover {
+  border: 1px dotted gray;
+  overflow: hidden;
+  position: relative;
+  padding: 0 .5em;
+  transition: border-color 0s linear 5s;
+}
+.hidden-until-hover:before {
+  content: "(hover to reveal)";
+  position: absolute;
+  opacity: .5;
+  text-align: center;
+  left: 0;
+  top: 0;
+  width: 100%;
+  overflow: hidden;
+  transition: width 0s linear 5s;
+}
+.hidden-until-hover > * {
+  visibility: hidden;
+  transition: visibility 0s linear 5s;
+}
+.hidden-until-hover:hover {
+  transition: border-color 0s linear 1s;
+  border-color: transparent;
+}
+.hidden-until-hover:hover:before {
+  content: "( keep hovering )";
+  transition: width 0s linear 1s;
+  width: 0;
+}
+.hidden-until-hover:hover > * {
+  transition: visibility 0s linear 1s;
+  visibility: visible;
+}
+
+.warning:not(.warning-active) {
+  transition: color 1s, opacity 1s;
+}
+.warning-active {
+  color: #ff0000;
+  opacity: 1;
+}
+
+.star-count {
+  color: #ffff66;
+}
+.supporter-badge {
+  color: #ffff66;
+}
+a.supporter-badge:hover, a.supporter-badge:focus {
+  text-decoration: none;
+  color: #ffffcc;
+  text-shadow: 0 0 5px #ffff66;
+}
+.sponsor-badge {
+  color: #79a2d8;
+}
+a.sponsor-badge:hover, a.sponsor-badge:focus {
+  text-decoration: none;
+  color: #ccdbed;
+  text-shadow: 0 0 5px #79a2d8;
+}
+
+#sidebar {
+  width: 200px;
+  float: right;
+  margin: 0 15px 2em 2em;
+  position: relative;
+  z-index: 10;
+}
+#sponsor {
+  margin-bottom: 2.5em;
+}
+
+header {
+  white-space: nowrap;
+  cursor: default;
+  z-index: 100;
+  margin-bottom: 2em;
+}
+header h1 {
+  display: inline-block;
+  margin: 0;
+  padding-right: 1em;
+}
+header h1 a, header h1 span {
+  display: inline-block;
+  text-decoration: none;
+  color: #00cc00;
+  text-shadow: 0 0 2px #00cc00, 0 0 5px #00cc00;
+}
+header h1 a:hover, header h1 a:focus {
+  color: #99ff99;
+  text-shadow: 0 0 2px #99ff99, 0 0 5px #99ff99;
+}
+header h1.title-event .title-event-wrap {
+  opacity: .33;
+  white-space: pre;
+}
+header .user {
+  display: inline-block;
+  padding-left: 1em;
+}
+header nav {
+  display: inline-block;
+}
+header nav ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  display: inline-block;
+}
+header nav li {
+  display: inline-block;
+  padding: 0 .6em;
+}
+header nav a {
+  display: inline-block;
+  text-decoration: none;
+  outline: none;
+}
+
+input[type="text"], textarea {
+  background: transparent;
+  color: inherit;
+  border: 1px solid #666666;
+  background: #10101a;
+  padding: 0 2px;
+  font-family: inherit;
+  font-size: inherit;
+  margin: 0;
+}
+textarea {
+  vertical-align: top;
+}
+
+label img {
+  vertical-align: bottom;
+  position: relative;
+  top: -3px;
+  margin-right: .3em;
+}
+input[type="radio"] { display: none; }
+input[type="radio"] ~ span {
+  cursor: pointer;
+  display: inline-block;
+}
+input[type="radio"] ~ span:before {
+  content: "( ) ";
+}
+input[type="radio"] ~ span:hover, input[type="radio"] ~ span:focus {
+  background-color: #19193b;
+}
+input[type="radio"]:checked ~ span {
+  color: #ffffff;
+}
+input[type="radio"]:checked ~ span:before {
+  content: "(O) ";
+}
+input[type="checkbox"] { display: none; }
+input[type="checkbox"] ~ span {
+  cursor: pointer;
+  display: inline-block;
+}
+input[type="checkbox"] ~ span:before {
+  content: "[ ] ";
+}
+input[type="checkbox"] ~ span:hover, input[type="checkbox"] ~ span:focus {
+  background-color: #19193b;
+}
+input[type="checkbox"]:checked ~ span {
+  color: #ffffff;
+}
+input[type="checkbox"]:checked ~ span:before {
+  content: "[X] ";
+}
+input[type="checkbox"]:disabled ~ span {
+  opacity: .3;
+  cursor: default;
+}
+input[type="checkbox"]:disabled ~ span:before {
+  content: "[-] ";
+}
+input[type="checkbox"]:disabled ~ span:hover {
+  background-color: transparent;
+}
+
+
+input[type="submit"] {
+  background: transparent;
+  border: 0;
+  font-family: inherit;
+  font-size: inherit;
+  margin: 0;
+  padding: 0;
+  color: #009900;
+  cursor: pointer;
+}
+input[type="submit"]:hover, input[type="submit"]:focus {
+  color: #99ff99;
+}
+*::-moz-focus-inner {
+  padding: 0;
+  border: 0
+}
+
+article {
+  width: 45em;
+  margin-bottom: 2em;
+  margin-top: 2em;
+}
+article:first-of-type {
+  margin-top: 0;
+}
+article h2 {
+  color: #ffffff;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  white-space: nowrap;
+}
+article h2 + * {
+  margin-top: 0;
+}
+article em {
+  color: #ffffff;
+  font-style: normal;
+  text-shadow: 0 0 5px #ffffff;
+}
+article em.star {
+  color: #ffff66;
+  font-style: normal;
+  text-shadow: 0 0 5px #ffff66;
+}
+article a {
+  white-space: nowrap;
+}
+article .aside {
+  opacity: .6;
+}
+article ul {
+  list-style-type: none;
+  padding: 0;
+}
+article li {
+  padding-left: 2.5em;
+  position: relative;
+}
+article li:before {
+  content: "\00a0\00a0-\00a0";
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+.day-success {
+  color: #ffff66;
+  text-shadow: 0 0 5px #ffff66;
+}
+
+form#settings input[type="radio"] ~ span {
+  min-width: 30em;
+}
+form#settings input[type="checkbox"] ~ span {
+  min-width: 30em;
+}
+
+.share {
+  color: #009900;
+  cursor: default;
+  transition: color .2s 1s;
+  /*position: relative;*/
+}
+.share:hover, .share:focus-within {
+  color: #aaffaa;
+  transition: color .2s 0s;
+}
+.share .share-content {
+  /*position: absolute; background: #0f0f23;*/
+  display: inline-block;
+  vertical-align: text-bottom;
+  white-space: nowrap;
+  overflow: hidden;
+  max-width: 0;
+  transition: max-width .2s 1s;
+}
+.share .share-content:before {
+  content: "\00a0";
+}
+.share .share-content:after {
+  /*content: "]";*/
+}
+.share:hover .share-content, .share:focus-within .share-content {
+  max-width: 45em;
+  transition: max-width .2s 0s;
+}
+
+.puzzle-input {
+  border: 1px solid #999999;
+  background: #333333;
+  color: #ffffff;
+  text-shadow: 0 0 5px #ffffff;
+}
+
+.calendar {
+  cursor: default;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: -moz-none;
+  -o-user-select: none;
+  user-select: none;
+}
+.calendar > span {
+  color: #333333;
+}
+.calendar > a {
+  text-decoration: none;
+  color: #666666;
+  outline: none;
+  cursor: default;
+}
+.calendar a:hover, .calendar a:focus {
+  background-color: #1e1e46;
+  background-color: rgba(119,119,165,.2);
+  cursor: pointer;
+}
+#calendar-countdown {
+  padding-left: .5em;
+  color: #cccccc;
+}
+.calendar .calendar-day { color: #666666; }
+.calendar a .calendar-day { color: #cccccc; }
+.calendar a .calendar-mark-complete,
+.calendar a .calendar-mark-verycomplete { visibility: hidden; }
+.calendar a.calendar-complete     .calendar-mark-complete,
+.calendar a.calendar-verycomplete .calendar-mark-complete { visibility: visible; color: #ffff66; }
+.calendar a.calendar-verycomplete .calendar-mark-verycomplete { visibility: visible; color: #ffff66; }
+
+.calendar .calendar-day-new               { animation: anim-day-new 5s; }
+.calendar .calendar-day-new .calendar-day { animation: anim-day-new-day 5s; }
+@keyframes anim-day-new {
+  0%   { color: #333333; text-shadow: 0 0 5px transparent; }
+  25%  { color: #ffffff; text-shadow: 0 0 5px #ffffff; }
+  100% { color: #666666; text-shadow: 0 0 5px transparent; }
+}
+@keyframes anim-day-new-day {
+  0%   { color: #666666; text-shadow: 0 0 5px transparent; }
+  25%  { color: #ffffff; text-shadow: 0 0 5px #ffffff; }
+  100% { color: #cccccc; text-shadow: 0 0 5px transparent; }
+}
+
+.eventlist-event {
+  white-space: pre;
+}
+
+.stats > span, .stats > span .stats-firstonly, .stats > span .stats-both {
+  color: #666666;
+}
+.stats > a {
+  color: #cccccc;
+  min-width: 35em;
+  display: inline-block;
+}
+.stats > a:hover, .stats > a:focus {
+  background-color: #1e1e46;
+}
+.stats-firstonly {
+  color: #9999cc;
+}
+.stats-both {
+  color: #ffff66;
+}
+
+.leaderboard-daylinks {
+  cursor: default;
+}
+.leaderboard-daylinks-selected {
+  color: #ffffff;
+  text-shadow: 0 0 5px #ffffff;
+}
+.leaderboard-daydesc-first {
+  color: #9999cc;
+}
+.leaderboard-daydesc-both {
+  color: #ffff66;
+}
+.leaderboard-entry {
+  white-space: pre;
+}
+.leaderboard-entry .leaderboard-totalscore {
+  color: #ffffff;
+}
+.leaderboard-anon {
+  opacity: .6;
+}
+.leaderboard-userphoto {
+  display: inline-block;
+  height: 20px;
+  width: 20px;
+  margin: 0 .5em;
+  text-align: center;
+}
+.leaderboard-userphoto img {
+  height: 20px;
+  max-width: 20px;
+  vertical-align: middle;
+  position: relative;
+  top: -2px;
+}
+.leaderboard-time {
+  opacity: .5;
+}
+
+.privboard-row {
+  white-space: pre;
+}
+.privboard-name {
+  vertical-align: text-bottom;
+}
+.privboard-days > span    { display: inline-block; color: #333333; }
+.privboard-days > a       { display: inline-block; }
+.privboard-star-locked    { visibility: hidden; }
+.privboard-star-unlocked  { color: #333333; }
+.privboard-star-firstonly { color: #9999cc; }
+.privboard-star-both      { color: #ffff66; }
+.privboard-delbtn { opacity:.33; }
+.privboard-row:hover .privboard-delbtn { opacity:1; }
+
+.sponsors {
+  width: 46em; /*76 characters*/
+}
+.sponsor {
+  margin: 1em 0;
+}
+
+</style>
+</head>
+<body>
+<main>
+<article class=day-desc><h2>--- Day 15: Warehouse Woes ---</h2><p>You appear back inside your own mini submarine! Each Historian drives their mini submarine in a different direction; maybe the Chief has his own submarine down here somewhere as well?</p>
+<p>You look up to see a vast school of <a href=https://adventofcode.com/2021/day/6>lanternfish</a> swimming past you. On closer inspection, they seem quite anxious, so you drive your mini submarine over to see if you can help.</p>
+<p>Because lanternfish populations grow rapidly, they need a lot of food, and that food needs to be stored somewhere. That's why these lanternfish have built elaborate warehouse complexes operated by robots!</p>
+<p>These lanternfish seem so anxious because they have lost control of the robot that operates one of their most important warehouses! It is currently running <span title="Wesnoth players might solve their Warehouse Woes with a Warehouse Wose!">amok</span>, pushing around boxes in the warehouse with no regard for lanternfish logistics <em>or</em> lanternfish inventory management strategies.</p>
+<p>Right now, none of the lanternfish are brave enough to swim up to an unpredictable robot so they could shut it off. However, if you could anticipate the robot's movements, maybe they could find a safe option.</p>
+<p>The lanternfish already have a map of the warehouse and a list of movements the robot will <em>attempt</em> to make (your puzzle input). The problem is that the movements will sometimes fail as boxes are shifted around, making the actual movements of the robot difficult to predict.</p>
+<p>For example:</p>
+<pre><code>##########
+#..O..O.O#
+#......O.#
+#.OO..O.O#
+#..O@..O.#
+#O#..O...#
+#O..O..O.#
+#.OO.O.OO#
+#....O...#
+##########
+
+&lt;vv&gt;^&lt;v^&gt;v&gt;^vv^v&gt;v&lt;&gt;v^v&lt;v&lt;^vv&lt;&lt;&lt;^&gt;&lt;&lt;&gt;&lt;&gt;&gt;v&lt;vvv&lt;&gt;^v^&gt;^&lt;&lt;&lt;&gt;&lt;&lt;v&lt;&lt;&lt;v^vv^v&gt;^
+vvv&lt;&lt;^&gt;^v^^&gt;&lt;&lt;&gt;&gt;&gt;&lt;&gt;^&lt;&lt;&gt;&lt;^vv^^&lt;&gt;vvv&lt;&gt;&gt;&lt;^^v&gt;^&gt;vv&lt;&gt;v&lt;&lt;&lt;&lt;v&lt;^v&gt;^&lt;^^&gt;&gt;&gt;^&lt;v&lt;v
+&gt;&lt;&gt;vv&gt;v^v^&lt;&gt;&gt;&lt;&gt;&gt;&gt;&gt;&lt;^^&gt;vv&gt;v&lt;^^^&gt;&gt;v^v^&lt;^^&gt;v^^&gt;v^&lt;^v&gt;v&lt;&gt;&gt;v^v^&lt;v&gt;v^^&lt;^^vv&lt;
+&lt;&lt;v&lt;^&gt;&gt;^^^^&gt;&gt;&gt;v^&lt;&gt;vvv^&gt;&lt;v&lt;&lt;&lt;&gt;^^^vv^&lt;vvv&gt;^&gt;v&lt;^^^^v&lt;&gt;^&gt;vvvv&gt;&lt;&gt;&gt;v^&lt;&lt;^^^^^
+^&gt;&lt;^&gt;&lt;&gt;&gt;&gt;&lt;&gt;^^&lt;&lt;^^v&gt;&gt;&gt;&lt;^&lt;v&gt;^&lt;vv&gt;&gt;v&gt;&gt;&gt;^v&gt;&lt;&gt;^v&gt;&lt;&lt;&lt;&lt;v&gt;&gt;v&lt;v&lt;v&gt;vvv&gt;^&lt;&gt;&lt;&lt;&gt;^&gt;&lt;
+^&gt;&gt;&lt;&gt;^v&lt;&gt;&lt;^vvv&lt;^^&lt;&gt;&lt;v&lt;&lt;&lt;&lt;&lt;&gt;&lt;^v&lt;&lt;&lt;&gt;&lt;&lt;&lt;^^&lt;v&lt;^^^&gt;&lt;^&gt;&gt;^&lt;v^&gt;&lt;&lt;&lt;^&gt;&gt;^v&lt;v^v&lt;v^
+&gt;^&gt;&gt;^v&gt;vv&gt;^&lt;&lt;^v&lt;&gt;&gt;&lt;&lt;&gt;&lt;&lt;v&lt;&lt;v&gt;&lt;&gt;v&lt;^vv&lt;&lt;&lt;&gt;^^v^&gt;^^&gt;&gt;&gt;&lt;&lt;^v&gt;&gt;v^v&gt;&lt;^^&gt;&gt;^&lt;&gt;vv^
+&lt;&gt;&lt;^^&gt;^^^&lt;&gt;&lt;vvvvv^v&lt;v&lt;&lt;&gt;^v&lt;v&gt;v&lt;&lt;^&gt;&lt;&lt;&gt;&lt;&lt;&gt;&lt;&lt;&lt;^^&lt;&lt;&lt;^&lt;&lt;&gt;&gt;&lt;&lt;&gt;&lt;^^^&gt;^^&lt;&gt;^&gt;v&lt;&gt;
+^^&gt;vv&lt;^v^v&lt;vv&gt;^&lt;&gt;&lt;v&lt;^v&gt;^^^&gt;&gt;&gt;^^vvv^&gt;vvv&lt;&gt;&gt;&gt;^&lt;^&gt;&gt;&gt;&gt;&gt;^&lt;&lt;^v&gt;^vvv&lt;&gt;^&lt;&gt;&lt;&lt;v&gt;
+v^^&gt;&gt;&gt;&lt;&lt;^^&lt;&gt;&gt;^v^&lt;v^vv&lt;&gt;v^&lt;&lt;&gt;^&lt;^v^v&gt;&lt;^&lt;&lt;&lt;&gt;&lt;&lt;^&lt;v&gt;&lt;v&lt;&gt;vv&gt;&gt;v&gt;&lt;v^&lt;vv&lt;&gt;v^&lt;&lt;^
+</code></pre>
+<p>As the robot (<code>@</code>) attempts to move, if there are any boxes (<code>O</code>) in the way, the robot will also attempt to push those boxes. However, if this action would cause the robot or a box to move into a wall (<code>#</code>), nothing moves instead, including the robot. The initial positions of these are shown on the map at the top of the document the lanternfish gave you.</p>
+<p>The rest of the document describes the <em>moves</em> (<code>^</code> for up, <code>v</code> for down, <code>&lt;</code> for left, <code>&gt;</code> for right) that the robot will attempt to make, in order. (The moves form a single giant sequence; they are broken into multiple lines just to make copy-pasting easier. Newlines within the move sequence should be ignored.)</p>
+<p>Here is a smaller example to get started:</p>
+<pre><code>########
+#..O.O.#
+##@.O..#
+#...O..#
+#.#.O..#
+#...O..#
+#......#
+########
+
+&lt;^^&gt;&gt;&gt;vv&lt;v&gt;&gt;v&lt;&lt;
+</code></pre>
+<p>Were the robot to attempt the given sequence of moves, it would push around the boxes as follows:</p>
+<pre><code>Initial state:
+########
+#..O.O.#
+##<em>@</em>.O..#
+#...O..#
+#.#.O..#
+#...O..#
+#......#
+########
+
+Move &lt;:
+########
+#..O.O.#
+##<em>@</em>.O..#
+#...O..#
+#.#.O..#
+#...O..#
+#......#
+########
+
+Move ^:
+########
+#.<em>@</em>O.O.#
+##..O..#
+#...O..#
+#.#.O..#
+#...O..#
+#......#
+########
+
+Move ^:
+########
+#.<em>@</em>O.O.#
+##..O..#
+#...O..#
+#.#.O..#
+#...O..#
+#......#
+########
+
+Move &gt;:
+########
+#..<em>@</em>OO.#
+##..O..#
+#...O..#
+#.#.O..#
+#...O..#
+#......#
+########
+
+Move &gt;:
+########
+#...<em>@</em>OO#
+##..O..#
+#...O..#
+#.#.O..#
+#...O..#
+#......#
+########
+
+Move &gt;:
+########
+#...<em>@</em>OO#
+##..O..#
+#...O..#
+#.#.O..#
+#...O..#
+#......#
+########
+
+Move v:
+########
+#....OO#
+##..<em>@</em>..#
+#...O..#
+#.#.O..#
+#...O..#
+#...O..#
+########
+
+Move v:
+########
+#....OO#
+##..<em>@</em>..#
+#...O..#
+#.#.O..#
+#...O..#
+#...O..#
+########
+
+Move &lt;:
+########
+#....OO#
+##.<em>@</em>...#
+#...O..#
+#.#.O..#
+#...O..#
+#...O..#
+########
+
+Move v:
+########
+#....OO#
+##.....#
+#..<em>@</em>O..#
+#.#.O..#
+#...O..#
+#...O..#
+########
+
+Move &gt;:
+########
+#....OO#
+##.....#
+#...<em>@</em>O.#
+#.#.O..#
+#...O..#
+#...O..#
+########
+
+Move &gt;:
+########
+#....OO#
+##.....#
+#....<em>@</em>O#
+#.#.O..#
+#...O..#
+#...O..#
+########
+
+Move v:
+########
+#....OO#
+##.....#
+#.....O#
+#.#.O<em>@</em>.#
+#...O..#
+#...O..#
+########
+
+Move &lt;:
+########
+#....OO#
+##.....#
+#.....O#
+#.#O<em>@</em>..#
+#...O..#
+#...O..#
+########
+
+Move &lt;:
+########
+#....OO#
+##.....#
+#.....O#
+#.#O<em>@</em>..#
+#...O..#
+#...O..#
+########
+</code></pre>
+<p>The larger example has many more moves; after the robot has finished those moves, the warehouse would look like this:</p>
+<pre><code>##########
+#.O.O.OOO#
+#........#
+#OO......#
+#OO<em>@</em>.....#
+#O#.....O#
+#O.....OO#
+#O.....OO#
+#OO....OO#
+##########
+</code></pre>
+<p>The lanternfish use their own custom Goods Positioning System (GPS for short) to track the locations of the boxes. The <em>GPS coordinate</em> of a box is equal to 100 times its distance from the top edge of the map plus its distance from the left edge of the map. (This process does not stop at wall tiles; measure all the way to the edges of the map.)</p>
+<p>So, the box shown below has a distance of <code>1</code> from the top edge of the map and <code>4</code> from the left edge of the map, resulting in a GPS coordinate of <code>100 * 1 + 4 = 104</code>.</p>
+<pre><code>#######
+#...O..
+#......
+</code></pre>
+<p>The lanternfish would like to know the <em>sum of all boxes' GPS coordinates</em> after the robot finishes moving. In the larger example, the sum of all boxes' GPS coordinates is <code><em>10092</em></code>. In the smaller example, the sum is <code><em>2028</em></code>.</p>
+<p>Predict the motion of the robot and boxes in the warehouse. After the robot is finished moving, <em>what is the sum of all boxes' GPS coordinates?</em></p>
+</article>
+
+<article class=day-desc><h2 id=part2>--- Part Two ---</h2><p>The lanternfish use your information to find a safe moment to swim in and turn off the malfunctioning robot! Just as they start preparing a festival in your honor, reports start coming in that a <em>second</em> warehouse's robot is <em>also</em> malfunctioning.</p>
+<p>This warehouse's layout is surprisingly similar to the one you just helped. There is one key difference: everything except the robot is <em>twice as wide</em>! The robot's list of movements doesn't change.</p>
+<p>To get the wider warehouse's map, start with your original map and, for each tile, make the following changes:</p>
+<ul>
+<li>If the tile is <code>#</code>, the new map contains <code>##</code> instead.</li>
+<li>If the tile is <code>O</code>, the new map contains <code>[]</code> instead.</li>
+<li>If the tile is <code>.</code>, the new map contains <code>..</code> instead.</li>
+<li>If the tile is <code>@</code>, the new map contains <code>@.</code> instead.</li>
+</ul>
+<p>This will produce a new warehouse map which is twice as wide and with wide boxes that are represented by <code>[]</code>. (The robot does not change size.)</p>
+<p>The larger example from before would now look like this:</p>
+<pre><code>####################
+##....[]....[]..[]##
+##............[]..##
+##..[][]....[]..[]##
+##....[]@.....[]..##
+##[]##....[]......##
+##[]....[]....[]..##
+##..[][]..[]..[][]##
+##........[]......##
+####################
+</code></pre>
+<p>Because boxes are now twice as wide but the robot is still the same size and speed, boxes can be aligned such that they directly push two other boxes at once. For example, consider this situation:</p>
+<pre><code>#######
+#...#.#
+#.....#
+#..OO@#
+#..O..#
+#.....#
+#######
+
+&lt;vv&lt;&lt;^^&lt;&lt;^^
+</code></pre>
+<p>After appropriately resizing this map, the robot would push around these boxes as follows:</p>
+<pre><code>Initial state:
+##############
+##......##..##
+##..........##
+##....[][]<em>@</em>.##
+##....[]....##
+##..........##
+##############
+
+Move &lt;:
+##############
+##......##..##
+##..........##
+##...[][]<em>@</em>..##
+##....[]....##
+##..........##
+##############
+
+Move v:
+##############
+##......##..##
+##..........##
+##...[][]...##
+##....[].<em>@</em>..##
+##..........##
+##############
+
+Move v:
+##############
+##......##..##
+##..........##
+##...[][]...##
+##....[]....##
+##.......<em>@</em>..##
+##############
+
+Move &lt;:
+##############
+##......##..##
+##..........##
+##...[][]...##
+##....[]....##
+##......<em>@</em>...##
+##############
+
+Move &lt;:
+##############
+##......##..##
+##..........##
+##...[][]...##
+##....[]....##
+##.....<em>@</em>....##
+##############
+
+Move ^:
+##############
+##......##..##
+##...[][]...##
+##....[]....##
+##.....<em>@</em>....##
+##..........##
+##############
+
+Move ^:
+##############
+##......##..##
+##...[][]...##
+##....[]....##
+##.....<em>@</em>....##
+##..........##
+##############
+
+Move &lt;:
+##############
+##......##..##
+##...[][]...##
+##....[]....##
+##....<em>@</em>.....##
+##..........##
+##############
+
+Move &lt;:
+##############
+##......##..##
+##...[][]...##
+##....[]....##
+##...<em>@</em>......##
+##..........##
+##############
+
+Move ^:
+##############
+##......##..##
+##...[][]...##
+##...<em>@</em>[]....##
+##..........##
+##..........##
+##############
+
+Move ^:
+##############
+##...[].##..##
+##...<em>@</em>.[]...##
+##....[]....##
+##..........##
+##..........##
+##############
+</code></pre>
+<p>This warehouse also uses GPS to locate the boxes. For these larger boxes, distances are measured from the edge of the map to the closest edge of the box in question. So, the box shown below has a distance of <code>1</code> from the top edge of the map and <code>5</code> from the left edge of the map, resulting in a GPS coordinate of <code>100 * 1 + 5 = 105</code>.</p>
+<pre><code>##########
+##...[]...
+##........
+</code></pre>
+<p>In the scaled-up version of the larger example from above, after the robot has finished all of its moves, the warehouse would look like this:</p>
+<pre><code>####################
+##[].......[].[][]##
+##[]...........[].##
+##[]........[][][]##
+##[]......[]....[]##
+##..##......[]....##
+##..[]............##
+##..<em>@</em>......[].[][]##
+##......[][]..[]..##
+####################
+</code></pre>
+<p>The sum of these boxes' GPS coordinates is <code><em>9021</em></code>.</p>
+<p>Predict the motion of the robot and boxes in this new, scaled-up warehouse. <em>What is the sum of all boxes' final GPS coordinates?</em></p>
+</article>
+</main>
+</body>
+</html>

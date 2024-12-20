@@ -36,7 +36,7 @@ def findShortestRoute(grid, x, y):
 
 
 def process(filename):
-   # Load grid and add additional border around it, to simply
+   # Load grid and add additional border around it, to simplify
    # boundary checks
    grid = []
    for line in open(filename):
@@ -65,8 +65,8 @@ def process(filename):
    for y in range(len(grid)):
       for x in range(len(grid[y])):
          if grid[y][x] == '#':
-            if (grid[y-1][x] == '.' and grid[y+1][x] == '.') or \
-               (grid[y][x-1] == '.' and grid[y][x+1] == '.'):
+            if (grid[y-1][x] != '#' and grid[y+1][x] != '#') or \
+               (grid[y][x-1] != '#' and grid[y][x+1] != '#'):
                grid[y][x] = '.'
                saved = baseline - findShortestRoute(grid, startX, startY)
                grid[y][x] = '#'
@@ -88,4 +88,4 @@ def process(filename):
 
 
 assert(process("example.txt") == 0)
-assert(process("input.txt") == 1446)  # 1446 is too low
+assert(process("input.txt") == 1448)

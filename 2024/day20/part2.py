@@ -14,8 +14,7 @@ def findShortestRoute(grid):
    for y in range(len(grid)):
       for x in range(len(grid[y])):
          if grid[y][x] == 'E':
-            endX = x
-            endY = y
+            endX, endY = x, y
             break
 
    # Keep track of shortest route to each position
@@ -58,8 +57,7 @@ def process(filename, maxCheatLength, threshold):
    for y in range(len(grid)):
       for x in range(len(grid[y])):
          if grid[y][x] == 'S':
-            startX = x
-            startY = y
+            startX, startY = x, y
             break
 
    # Calculate distance from each position to end
@@ -67,7 +65,6 @@ def process(filename, maxCheatLength, threshold):
    
    # Try all possible cheats
    cheats = {}
-   optionCounter = 0
    for y in range(len(grid)):
       for x in range(len(grid[y])):
          if grid[y][x] != '#':

@@ -58,7 +58,7 @@ def process(filename):
 
    # Calculate normal route
    baseline = findShortestRoute(grid, startX, startY)
-   print("baseline:", baseline)
+   #print("baseline:", baseline)
    
    # Try to remove walls to create cheats
    cheats = {}
@@ -79,7 +79,7 @@ def process(filename):
    # Count cheats
    sum = 0
    for saved in sorted(cheats.keys()):
-      print(saved, cheats[saved])
+      #print(saved, cheats[saved])
       if saved >= 100:
          sum += cheats[saved]
 

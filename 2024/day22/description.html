@@ -1,0 +1,601 @@
+<!DOCTYPE html> <html lang=en-us style><meta charset=utf-8><head>
+<title>Day 22 - Advent of Code 2024</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@300');
+
+body {
+  background: #0f0f23; /*337 x 5*/
+  color: #cccccc;
+  font-family: "Source Code Pro", monospace;
+  font-weight: 300;
+  font-size: 14pt;
+  min-width: 60em;
+}
+img { border:0; }
+a { outline:0; }
+main, figure, figcaption { display:block; }
+pre, code { font-family: "Source Code Pro", monospace; }
+header, main {
+  -webkit-text-size-adjust: none;
+}
+
+a {
+  text-decoration: none;
+  color: #009900;
+}
+a:hover, a:focus {
+  color: #99ff99;
+}
+h1, h2 {
+  font-size: 1em;
+  font-weight: normal;
+}
+code {
+  position: relative;
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+}
+code:before {
+  z-index: -1;
+  content: "";
+  position: absolute;
+  display: block;
+  left: -2px;
+  right: -2px;
+  top: 3px;
+  bottom: 0px;
+  border: 1px solid #333340;
+  background: #10101a;
+}
+pre.wrap {
+  max-width: 100%;
+  white-space: pre-wrap;
+}
+
+.quiet {
+  opacity: .5;
+}
+p.wrap {
+  width: 45em;
+}
+
+.hidden-until-hover {
+  border: 1px dotted gray;
+  overflow: hidden;
+  position: relative;
+  padding: 0 .5em;
+  transition: border-color 0s linear 5s;
+}
+.hidden-until-hover:before {
+  content: "(hover to reveal)";
+  position: absolute;
+  opacity: .5;
+  text-align: center;
+  left: 0;
+  top: 0;
+  width: 100%;
+  overflow: hidden;
+  transition: width 0s linear 5s;
+}
+.hidden-until-hover > * {
+  visibility: hidden;
+  transition: visibility 0s linear 5s;
+}
+.hidden-until-hover:hover {
+  transition: border-color 0s linear 1s;
+  border-color: transparent;
+}
+.hidden-until-hover:hover:before {
+  content: "( keep hovering )";
+  transition: width 0s linear 1s;
+  width: 0;
+}
+.hidden-until-hover:hover > * {
+  transition: visibility 0s linear 1s;
+  visibility: visible;
+}
+
+.warning:not(.warning-active) {
+  transition: color 1s, opacity 1s;
+}
+.warning-active {
+  color: #ff0000;
+  opacity: 1;
+}
+
+.star-count {
+  color: #ffff66;
+}
+.supporter-badge {
+  color: #ffff66;
+}
+a.supporter-badge:hover, a.supporter-badge:focus {
+  text-decoration: none;
+  color: #ffffcc;
+  text-shadow: 0 0 5px #ffff66;
+}
+.sponsor-badge {
+  color: #79a2d8;
+}
+a.sponsor-badge:hover, a.sponsor-badge:focus {
+  text-decoration: none;
+  color: #ccdbed;
+  text-shadow: 0 0 5px #79a2d8;
+}
+
+#sidebar {
+  width: 200px;
+  float: right;
+  margin: 0 15px 2em 2em;
+  position: relative;
+  z-index: 10;
+}
+#sponsor {
+  margin-bottom: 2.5em;
+}
+
+header {
+  white-space: nowrap;
+  cursor: default;
+  z-index: 100;
+  margin-bottom: 2em;
+}
+header h1 {
+  display: inline-block;
+  margin: 0;
+  padding-right: 1em;
+}
+header h1 a, header h1 span {
+  display: inline-block;
+  text-decoration: none;
+  color: #00cc00;
+  text-shadow: 0 0 2px #00cc00, 0 0 5px #00cc00;
+}
+header h1 a:hover, header h1 a:focus {
+  color: #99ff99;
+  text-shadow: 0 0 2px #99ff99, 0 0 5px #99ff99;
+}
+header h1.title-event .title-event-wrap {
+  opacity: .33;
+  white-space: pre;
+}
+header .user {
+  display: inline-block;
+  padding-left: 1em;
+}
+header nav {
+  display: inline-block;
+}
+header nav ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  display: inline-block;
+}
+header nav li {
+  display: inline-block;
+  padding: 0 .6em;
+}
+header nav a {
+  display: inline-block;
+  text-decoration: none;
+  outline: none;
+}
+
+input[type="text"], textarea {
+  background: transparent;
+  color: inherit;
+  border: 1px solid #666666;
+  background: #10101a;
+  padding: 0 2px;
+  font-family: inherit;
+  font-size: inherit;
+  margin: 0;
+}
+textarea {
+  vertical-align: top;
+}
+
+label img {
+  vertical-align: bottom;
+  position: relative;
+  top: -3px;
+  margin-right: .3em;
+}
+input[type="radio"] { display: none; }
+input[type="radio"] ~ span {
+  cursor: pointer;
+  display: inline-block;
+}
+input[type="radio"] ~ span:before {
+  content: "( ) ";
+}
+input[type="radio"] ~ span:hover, input[type="radio"] ~ span:focus {
+  background-color: #19193b;
+}
+input[type="radio"]:checked ~ span {
+  color: #ffffff;
+}
+input[type="radio"]:checked ~ span:before {
+  content: "(O) ";
+}
+input[type="checkbox"] { display: none; }
+input[type="checkbox"] ~ span {
+  cursor: pointer;
+  display: inline-block;
+}
+input[type="checkbox"] ~ span:before {
+  content: "[ ] ";
+}
+input[type="checkbox"] ~ span:hover, input[type="checkbox"] ~ span:focus {
+  background-color: #19193b;
+}
+input[type="checkbox"]:checked ~ span {
+  color: #ffffff;
+}
+input[type="checkbox"]:checked ~ span:before {
+  content: "[X] ";
+}
+input[type="checkbox"]:disabled ~ span {
+  opacity: .3;
+  cursor: default;
+}
+input[type="checkbox"]:disabled ~ span:before {
+  content: "[-] ";
+}
+input[type="checkbox"]:disabled ~ span:hover {
+  background-color: transparent;
+}
+
+
+input[type="submit"] {
+  background: transparent;
+  border: 0;
+  font-family: inherit;
+  font-size: inherit;
+  margin: 0;
+  padding: 0;
+  color: #009900;
+  cursor: pointer;
+}
+input[type="submit"]:hover, input[type="submit"]:focus {
+  color: #99ff99;
+}
+*::-moz-focus-inner {
+  padding: 0;
+  border: 0
+}
+
+article {
+  width: 45em;
+  margin-bottom: 2em;
+  margin-top: 2em;
+}
+article:first-of-type {
+  margin-top: 0;
+}
+article h2 {
+  color: #ffffff;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  white-space: nowrap;
+}
+article h2 + * {
+  margin-top: 0;
+}
+article em {
+  color: #ffffff;
+  font-style: normal;
+  text-shadow: 0 0 5px #ffffff;
+}
+article em.star {
+  color: #ffff66;
+  font-style: normal;
+  text-shadow: 0 0 5px #ffff66;
+}
+article a {
+  white-space: nowrap;
+}
+article .aside {
+  opacity: .6;
+}
+article ul {
+  list-style-type: none;
+  padding: 0;
+}
+article li {
+  padding-left: 2.5em;
+  position: relative;
+}
+article li:before {
+  content: "\00a0\00a0-\00a0";
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+.day-success {
+  color: #ffff66;
+  text-shadow: 0 0 5px #ffff66;
+}
+
+form#settings input[type="radio"] ~ span {
+  min-width: 30em;
+}
+form#settings input[type="checkbox"] ~ span {
+  min-width: 30em;
+}
+
+.share {
+  color: #009900;
+  cursor: default;
+  transition: color .2s 1s;
+  /*position: relative;*/
+}
+.share:hover, .share:focus-within {
+  color: #aaffaa;
+  transition: color .2s 0s;
+}
+.share .share-content {
+  /*position: absolute; background: #0f0f23;*/
+  display: inline-block;
+  vertical-align: text-bottom;
+  white-space: nowrap;
+  overflow: hidden;
+  max-width: 0;
+  transition: max-width .2s 1s;
+}
+.share .share-content:before {
+  content: "\00a0";
+}
+.share .share-content:after {
+  /*content: "]";*/
+}
+.share:hover .share-content, .share:focus-within .share-content {
+  max-width: 45em;
+  transition: max-width .2s 0s;
+}
+
+.puzzle-input {
+  border: 1px solid #999999;
+  background: #333333;
+  color: #ffffff;
+  text-shadow: 0 0 5px #ffffff;
+}
+
+.calendar {
+  cursor: default;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: -moz-none;
+  -o-user-select: none;
+  user-select: none;
+}
+.calendar > span {
+  color: #333333;
+}
+.calendar > a {
+  text-decoration: none;
+  color: #666666;
+  outline: none;
+  cursor: default;
+}
+.calendar a:hover, .calendar a:focus {
+  background-color: #1e1e46;
+  background-color: rgba(119,119,165,.2);
+  cursor: pointer;
+}
+#calendar-countdown {
+  padding-left: .5em;
+  color: #cccccc;
+}
+.calendar .calendar-day { color: #666666; }
+.calendar a .calendar-day { color: #cccccc; }
+.calendar a .calendar-mark-complete,
+.calendar a .calendar-mark-verycomplete { visibility: hidden; }
+.calendar a.calendar-complete     .calendar-mark-complete,
+.calendar a.calendar-verycomplete .calendar-mark-complete { visibility: visible; color: #ffff66; }
+.calendar a.calendar-verycomplete .calendar-mark-verycomplete { visibility: visible; color: #ffff66; }
+
+.calendar .calendar-day-new               { animation: anim-day-new 5s; }
+.calendar .calendar-day-new .calendar-day { animation: anim-day-new-day 5s; }
+@keyframes anim-day-new {
+  0%   { color: #333333; text-shadow: 0 0 5px transparent; }
+  25%  { color: #ffffff; text-shadow: 0 0 5px #ffffff; }
+  100% { color: #666666; text-shadow: 0 0 5px transparent; }
+}
+@keyframes anim-day-new-day {
+  0%   { color: #666666; text-shadow: 0 0 5px transparent; }
+  25%  { color: #ffffff; text-shadow: 0 0 5px #ffffff; }
+  100% { color: #cccccc; text-shadow: 0 0 5px transparent; }
+}
+
+.eventlist-event {
+  white-space: pre;
+}
+
+.stats > span, .stats > span .stats-firstonly, .stats > span .stats-both {
+  color: #666666;
+}
+.stats > a {
+  color: #cccccc;
+  min-width: 35em;
+  display: inline-block;
+}
+.stats > a:hover, .stats > a:focus {
+  background-color: #1e1e46;
+}
+.stats-firstonly {
+  color: #9999cc;
+}
+.stats-both {
+  color: #ffff66;
+}
+
+.leaderboard-daylinks {
+  cursor: default;
+}
+.leaderboard-daylinks-selected {
+  color: #ffffff;
+  text-shadow: 0 0 5px #ffffff;
+}
+.leaderboard-daydesc-first {
+  color: #9999cc;
+}
+.leaderboard-daydesc-both {
+  color: #ffff66;
+}
+.leaderboard-entry {
+  white-space: pre;
+}
+.leaderboard-entry .leaderboard-totalscore {
+  color: #ffffff;
+}
+.leaderboard-anon {
+  opacity: .6;
+}
+.leaderboard-userphoto {
+  display: inline-block;
+  height: 20px;
+  width: 20px;
+  margin: 0 .5em;
+  text-align: center;
+}
+.leaderboard-userphoto img {
+  height: 20px;
+  max-width: 20px;
+  vertical-align: middle;
+  position: relative;
+  top: -2px;
+}
+.leaderboard-time {
+  opacity: .5;
+}
+
+.privboard-row {
+  white-space: pre;
+}
+.privboard-name {
+  vertical-align: text-bottom;
+}
+.privboard-days > span    { display: inline-block; color: #333333; }
+.privboard-days > a       { display: inline-block; }
+.privboard-star-locked    { visibility: hidden; }
+.privboard-star-unlocked  { color: #333333; }
+.privboard-star-firstonly { color: #9999cc; }
+.privboard-star-both      { color: #ffff66; }
+.privboard-delbtn { opacity:.33; }
+.privboard-row:hover .privboard-delbtn { opacity:1; }
+
+.sponsors {
+  width: 46em; /*76 characters*/
+}
+.sponsor {
+  margin: 1em 0;
+}
+
+</style>
+</head>
+<body>
+<main>
+<article class=day-desc><h2>--- Day 22: Monkey Market ---</h2><p>As you're all teleported deep into the jungle, a <a href=https://adventofcode.com/2022/day/11>monkey</a> steals The Historians' device! You'll need to get it back while The Historians are looking for the Chief.</p>
+<p>The monkey that stole the device seems willing to trade it, but only in exchange for an absurd number of bananas. Your only option is to buy bananas on the Monkey Exchange Market.</p>
+<p>You aren't sure how the Monkey Exchange Market works, but one of The Historians senses trouble and comes over to help. Apparently, they've been studying these monkeys for a while and have deciphered their secrets.</p>
+<p>Today, the Market is full of monkeys buying <em>good hiding spots</em>. Fortunately, because of the time you recently spent in this jungle, you know lots of good hiding spots you can sell! If you sell enough hiding spots, you should be able to get enough bananas to buy the device back.</p>
+<p>On the Market, the buyers seem to use random prices, but their prices are actually only <a href=https://en.wikipedia.org/wiki/Pseudorandom_number_generator target=_blank>pseudorandom</a>! If you know the secret of how they pick their prices, you can wait for the perfect time to sell.</p>
+<p>The part about secrets is literal, the Historian explains. Each buyer produces a pseudorandom sequence of secret numbers where each secret is derived from the previous.</p>
+<p>In particular, each buyer's <em>secret</em> number evolves into the next secret number in the sequence via the following process:</p>
+<ul>
+<li>Calculate the result of <em>multiplying the secret number by <code>64</code></em>. Then, <em>mix</em> this result into the secret number. Finally, <em>prune</em> the secret number.</li>
+<li>Calculate the result of <em>dividing the secret number by <code>32</code></em>. Round the result down to the nearest integer. Then, <em>mix</em> this result into the secret number. Finally, <em>prune</em> the secret number.</li>
+<li>Calculate the result of <em>multiplying the secret number by <code>2048</code></em>. Then, <em>mix</em> this result into the secret number. Finally, <em>prune</em> the secret number.</li>
+</ul>
+<p>Each step of the above process involves <em>mixing</em> and <em>pruning</em>:</p>
+<ul>
+<li>To <em>mix</em> a value into the secret number, calculate the <a href=https://en.wikipedia.org/wiki/Bitwise_operation#XOR target=_blank>bitwise XOR</a> of the given value and the secret number. Then, the secret number becomes the result of that operation. (If the secret number is <code>42</code> and you were to <em>mix</em> <code>15</code> into the secret number, the secret number would become <code>37</code>.)</li>
+<li>To <em>prune</em> the secret number, calculate the value of the secret number <a href=https://en.wikipedia.org/wiki/Modulo target=_blank>modulo</a> <code>16777216</code>. Then, the secret number becomes the result of that operation. (If the secret number is <code>100000000</code> and you were to <em>prune</em> the secret number, the secret number would become <code>16113920</code>.)</li>
+</ul>
+<p>After this process completes, the buyer is left with the next secret number in the sequence. The buyer can repeat this process as many times as necessary to produce more secret numbers.</p>
+<p>So, if a buyer had a secret number of <code>123</code>, that buyer's next ten secret numbers would be:</p>
+<pre><code>15887950
+16495136
+527345
+704524
+1553684
+12683156
+11100544
+12249484
+7753432
+5908254
+</code></pre>
+<p>Each buyer uses their own secret number when choosing their price, so it's important to be able to predict the sequence of secret numbers for each buyer. Fortunately, the Historian's research has uncovered the <em>initial secret number of each buyer</em> (your puzzle input). For example:</p>
+<pre><code>1
+10
+100
+2024
+</code></pre>
+<p>This list describes the <em>initial secret number</em> of four different secret-hiding-spot-buyers on the Monkey Exchange Market. If you can simulate secret numbers from each buyer, you'll be able to predict all of their future prices.</p>
+<p>In a single day, buyers each have time to generate <code>2000</code> <em>new</em> secret numbers. In this example, for each buyer, their initial secret number and the 2000th new secret number they would generate are:</p>
+<pre><code>1: 8685429
+10: 4700978
+100: 15273692
+2024: 8667524
+</code></pre>
+<p>Adding up the 2000th new secret number for each buyer produces <code><em>37327623</em></code>.</p>
+<p>For each buyer, simulate the creation of 2000 new secret numbers. <em>What is the sum of the 2000th secret number generated by each buyer?</em></p>
+</article>
+
+<p>To begin, <a href="input.txt" target=_blank>get your puzzle input</a>.</p>
+
+<article class=day-desc><h2 id=part2>--- Part Two ---</h2><p>Of course, the secret numbers aren't the prices each buyer is offering! That would be <span title="Some might say it would be... bananas.">ridiculous</span>. Instead, the <em>prices</em> the buyer offers are just the <em>ones digit</em> of each of their secret numbers.</p>
+<p>So, if a buyer starts with a secret number of <code>123</code>, that buyer's first ten <em>prices</em> would be:</p>
+<pre><code>3 (from 123)
+0 (from 15887950)
+6 (from 16495136)
+5 (etc.)
+4
+4
+6
+4
+4
+2
+</code></pre>
+<p>This price is the number of <em>bananas</em> that buyer is offering in exchange for your information about a new hiding spot. However, you still don't speak <a href=https://adventofcode.com/2022/day/21>monkey</a>, so you can't negotiate with the buyers directly. The Historian speaks a little, but not enough to negotiate; instead, he can ask another monkey to negotiate on your behalf.</p>
+<p>Unfortunately, the monkey only knows how to decide when to sell by looking at the <em>changes</em> in price. Specifically, the monkey will only look for a specific sequence of <em>four consecutive changes</em> in price, then immediately sell when it sees that sequence.</p>
+<p>So, if a buyer starts with a secret number of <code>123</code>, that buyer's first ten secret numbers, prices, and the associated changes would be:</p>
+<pre><code>     123: 3 
+15887950: 0 (-3)
+16495136: 6 (6)
+  527345: 5 (-1)
+  704524: 4 (-1)
+ 1553684: 4 (0)
+12683156: 6 (2)
+11100544: 4 (-2)
+12249484: 4 (0)
+ 7753432: 2 (-2)
+</code></pre>
+<p>Note that the first price has no associated change because there was no previous price to compare it with.</p>
+<p>In this short example, within just these first few prices, the highest price will be <code>6</code>, so it would be nice to give the monkey instructions that would make it sell at that time. The first <code>6</code> occurs after only two changes, so there's no way to instruct the monkey to sell then, but the second <code>6</code> occurs after the changes <code>-1,-1,0,2</code>. So, if you gave the monkey that sequence of changes, it would wait until the first time it sees that sequence and then immediately sell your hiding spot information at the current price, winning you <code>6</code> bananas.</p>
+<p>Each buyer only wants to buy one hiding spot, so after the hiding spot is sold, the monkey will move on to the next buyer. If the monkey <em>never</em> hears that sequence of price changes from a buyer, the monkey will never sell, and will instead just move on to the next buyer.</p>
+<p>Worse, you can only give the monkey <em>a single sequence</em> of four price changes to look for. You can't change the sequence between buyers.</p>
+<p>You're going to need as many bananas as possible, so you'll need to <em>determine which sequence</em> of four price changes will cause the monkey to get you the <em>most bananas overall</em>. Each buyer is going to generate <code>2000</code> secret numbers after their initial secret number, so, for each buyer, you'll have <em><code>2000</code> price changes</em> in which your sequence can occur.</p>
+<p>Suppose the initial secret number of each buyer is:</p>
+<pre><code>1
+2
+3
+2024
+</code></pre>
+<p>There are many sequences of four price changes you could tell the monkey, but for these four buyers, the sequence that will get you the most bananas is <code>-2,1,-1,3</code>. Using that sequence, the monkey will make the following sales:</p>
+<ul>
+<li>For the buyer with an initial secret number of <code>1</code>, changes <code>-2,1,-1,3</code> first occur when the price is <code><em>7</em></code>.</li>
+<li>For the buyer with initial secret <code>2</code>, changes <code>-2,1,-1,3</code> first occur when the price is <code><em>7</em></code>.</li>
+<li>For the buyer with initial secret <code>3</code>, the change sequence <code>-2,1,-1,3</code> <em>does not occur</em> in the first 2000 changes.</li>
+<li>For the buyer starting with <code>2024</code>, changes <code>-2,1,-1,3</code> first occur when the price is <code><em>9</em></code>.</li>
+</ul>
+<p>So, by asking the monkey to sell the first time each buyer's prices go down <code>2</code>, then up <code>1</code>, then down <code>1</code>, then up <code>3</code>, you would get <code><em>23</em></code> (<code>7 + 7 + 9</code>) bananas!</p>
+<p>Figure out the best sequence to tell the monkey so that by looking for that same sequence of changes in every buyer's future prices, you get the most bananas in total. <em>What is the most bananas you can get?</em></p>
+</article>
+<p>Although it hasn't changed, you can still <a href="input.txt" target=_blank>get your puzzle input</a>.</p>
+</main>
+</body>
+</html>

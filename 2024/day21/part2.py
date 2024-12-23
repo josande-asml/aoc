@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+import functools
+
 # Key locations
 numpad = {
     '7': (0, 0),
@@ -62,87 +64,42 @@ def generateStep(src, dest, keypad):
     return moves
 
 
-def generateNumMoves(code):
-    moves = []
-    code = 'A' + code       # start at 'A'
-    for i in range(len(code)-1):
-        stepMoves = generateStep(code[i], code[i+1], numpad)
-        newMoves = []
-        if len(moves) == 0:
-            newMoves = stepMoves
-        else:
-            for m in moves:
-                for sm in stepMoves:
-                    newMoves += [ m + sm ]
-        moves = newMoves
-    return moves
+def findShortest(code, level, keypad, cache):
+    if level == 0:
+        return len(code)
 
+    cacheKey = code + '/' + str(level)
+    if cacheKey in cache:
+        return cache[cacheKey]
 
-def generateDirSeq(code):
-    seq = ""
-    code = 'A' + code       # start at 'A'
-    for i in range(len(code)-1):
-        stepMoves = generateStep(code[i], code[i+1], dirpad)
-        seq += stepMoves[0]
-    return seq
+    total = 0
+    prev = 'A'
+    for i in range(len(code)):
+        moves = generateStep(prev, code[i], keypad)
+        prev = code[i]
+        shortest = -1
+        for move in moves:
+            length = findShortest(move, level-1, dirpad, cache)
+            if shortest == -1 or length < shortest:
+                shortest = length
+        total += shortest
 
-
-# Each move ends with a press of 'A'. After that
-# the history/previous moves are no longer relevant.
-# This means we can build up a cache and reuse sequences.
-def findShortestSeqLength(code):
-    shortestSeqLength = -1
-    for move in generateNumMoves(code):
-        # Break up move in parts from 'A' to 'A' and count
-        # occurance of each sub-move type
-        count = {}
-        parts = move.split('A')[:-1]
-        for part in parts:
-            part += 'A'
-            if part in count:
-                count[part] += 1
-            else:
-                count[part] = 1
-
-        # Repetitively expand sub-moves
-        for n in range(25):
-            count2 = {}
-            for key, freq in count.items():
-                seq = generateDirSeq(key)
-                parts = seq.split('A')[:-1]
-                for part in parts:
-                    part += 'A'
-                    if part in count2:
-                        count2[part] += freq
-                    else:
-                        count2[part] = freq
-            count = count2
-
-        # Calculate sequence length
-        length = 0
-        for key, freq in count.items():
-            length += freq*len(key)
-
-        print(code, length)
-
-        if shortestSeqLength == -1 or length < shortestSeqLength:
-            shortestSeqLength = length
-
-    return shortestSeqLength
+    cache[cacheKey] = total
+    return total
 
 
 def process(filename):
+    cache = {}
     sum = 0
     for line in open(filename):
         code = line.strip()
-        seqLength = findShortestSeqLength(code)
+        length = findShortest(code, 1+25, numpad, cache)
         number = int(code[:-1])
-        sum += seqLength * number
+        sum += length * number
 
     print(filename, sum)
     return sum
 
 
-assert(process("example.txt") == 175396398527088)
-assert(process("input.txt") != 281309974290720)  # 281309974290720 is too high
-                                                 # 112380591108802 is too low
+assert(process("example.txt") == 154115708116294)
+assert(process("input.txt") == 246810588779586)

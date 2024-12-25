@@ -5,9 +5,28 @@
 # we can converge towards a correct solution by reusing parts of the
 # partial solution.
 #
-# We exhaustively search for the next pair to swap by minimizing the
-# number of incorrect output bits. We keep adding pairs until we
-# found the solution.
+# First we create a list of randomly generated swap patterns. This is
+# our first "generation".
+#
+# Next we grow a new generation using these operations (retrying each
+#  time we get a duplicate that is already in the generation):
+#
+# - in 60% of the cases we randomly select two swap patterns and create
+#   a new swap pattern by randomy using pieces either two.
+#
+# - in 30% of the cases we randomly select a swap pattern and replace
+#   one of the swap by a new random swap.
+#
+# - in 10% of the cases we generate a completely new random swap pattern.
+#
+# The new generation is much larger that the old generation. For each
+# swap pattern we calculate the number of invalid output bits. We select
+# the best swap patterns from the new generation and start the next
+# iteration.
+#
+# This algorithm does converge very slowly and might not ever find the
+# solution. When we noticed this, we started coding the exhaustive search
+# method below.
 
 import random
 import math

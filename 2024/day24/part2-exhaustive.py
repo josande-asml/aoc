@@ -2,16 +2,17 @@
 
 # Our assumption is that when we have a partially correct solution,
 # then a part of the output bits will also be correct. This implies
-# we can converge towards a correct solution by reusing bits of the
+# we can converge towards a correct solution by reusing parts of the
 # partial solution.
 #
-# Therefore we use a Genetic Algorithm that tries crossing, mutating
-# and occasionally randomizing the (partial) solutions. With each
-# generation we try to reduce the average number of incorrect bits.
+# We exhaustively search all combinations of two gates to swap and
+# measure which pair gives the lowest number of invalid output bits.
+# We keep the best pair, and start searching for the second pair by
+# again measuring the number of invalid output bits.
 #
-# It is not feasible to test all 45 bits therefore we sample a few
-# random values and measure the average number of incorrect output
-# bits.
+# We keep adding pairs until we have the right amount of pairs. If
+# that was not yet the solution, we remove the oldest pair and try
+# to add a new pair.
 
 import random
 import math

@@ -66,7 +66,7 @@ def generateSamples(nrSamples, nrBits):
     samples += [((1 << nrBits)-1, (1 << nrBits)-1)]
 
     # test patterns using random bits
-    random.seed(1)  # always use same "random" numbers for reproducibility of bugs/convergence
+    random.seed(0)  # always use same "random" numbers for reproducibility of bugs/convergence
     for n in range(nrSamples-8):
         x = random.randrange(1 << nrBits)
         y = random.randrange(1 << nrBits)

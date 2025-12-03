@@ -15,4 +15,4 @@ def process(filename):
     return sum
 
 assert(process("example.txt") == 357)
-assert(process("input.txt") == 0)
+assert(process("input.txt") == 17330)

@@ -4,8 +4,8 @@ def process(filename):
     dial = 50
     nr_zeros = 0
     for line in open(filename):
+        nr_clicks = int(line[1:])
         if line[0] == 'L':
-            nr_clicks = int(line[1:])
             if dial == 0: dial = 100
             while nr_clicks >= dial:
                 nr_clicks -= dial
@@ -14,7 +14,6 @@ def process(filename):
             dial -= nr_clicks
             if dial == 100: dial = 0
         elif line[0] == 'R':
-            nr_clicks = int(line[1:])
             while nr_clicks >= 100-dial:
                 nr_clicks -= 100-dial
                 dial = 0

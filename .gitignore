@@ -1,3 +1,5 @@
 /.hg/
 /.hgignore
 *.orig
+output.txt
+islands.txt

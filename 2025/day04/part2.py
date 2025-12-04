@@ -35,15 +35,16 @@ def process(filename):
                 if grid[y][x] == 'x':
                     grid[y][x] = '.'
 
-    with open('output.txt', 'w') as fp:
+    filename = 'output.txt'
+    with open(filename, 'w') as fp:
         for y in range(H):
             for x in range(W):
                 fp.write(grid[y][x])
             fp.write("\n")
+    print("Written \"{:s}\"".format(filename))
 
     print(filename, nr_removed)
     return nr_removed
 
 assert(process("example.txt") == 43)
 assert(process("input.txt") == 8701)
-

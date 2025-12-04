@@ -7,13 +7,30 @@ def process(filename):
     for line in open(filename):
         nr_clicks = int(line[1:])*0x434C49434B
         if line[0] == 'L':
-            dial = ((100-dial) % 100) + nr_clicks
-            nr_zeros += dial//100
-            dial = 100-dial
-        else:
-            dial += nr_clicks
-            nr_zeros += dial//100
-        dial = dial % 100
+            if nr_clicks >= 100:
+                nr_zeros += nr_clicks // 100
+                nr_clicks = nr_clicks % 100
+
+            while nr_clicks > 0:
+                nr_clicks -= 1
+                if dial == 0:
+                    dial = 99
+                else:
+                    dial -= 1
+                    if dial == 0:
+                        nr_zeros += 1
+        elif line[0] == 'R':
+            if nr_clicks >= 100:
+                nr_zeros += nr_clicks // 100
+                nr_clicks = nr_clicks % 100
+
+            while nr_clicks > 0:
+                nr_clicks -= 1
+                if dial == 99:
+                    dial = 0
+                    nr_zeros += 1
+                else:
+                    dial += 1
 
     print(nr_zeros)
     return nr_zeros

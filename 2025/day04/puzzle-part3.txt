@@ -1,0 +1,37 @@
+[2025 Day 4 (Part 3)] Islands and Lakes
+
+Once all the rolls of paper have been removed by the forklifts, the warehouse looks much
+more organized. The two Elves in charge of the security cameras are even joking about 
+the new layout, viewed from above.
+
+"It looks like a geographical map", said the first one, "with the sea represented by 
+dots and islands by @."
+
+"Indeed", replied the second one, "you can even notice some lakes inside some islands.
+Let's count the number of islands which have at least one lake inside them." Then they
+both turn around and look at you: "And maybe you can help us with the count!"
+
+After clarifying what they exactly call an island (a set of rolls that are surrounded
+in all directions -- horizontally, vertically and diagonally -- by empty spaces) and a
+lake (a set of empty spaces surrounded by rolls -- above, below, on the left and on
+the right, diagonals do not count for lakes), you can easily count the number of
+islands with at least one lake in the warehouse.
+
+Example of two islands, one with no lakes and one with three lakes:
+
+   .........@@................@@@@......................
+   ........@@@................@@.@@.....................
+   .......@@.@@...............@@@.@.....................
+   .......@@.@@...............@...@.....................
+   .......@@.@@...............@..@@.....................
+   .......@@..................@@@@@@@@@@@@..............
+   .......@@@@@@@.............@@........@@..............
+   .......@@@@@@@.............@@@@@@@@@@@@..............
+
+Using your input file, what is the number of islands with at least one lake?
+
+(Note: as input files are different, first write your program and then visually 
+confirm the result!)
+
+---
+From: https://www.reddit.com/r/adventofcode/comments/1pdwr43/2025_day_4_part_3_islands_and_lakes/

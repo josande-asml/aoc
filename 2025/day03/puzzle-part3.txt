@@ -1,0 +1,28 @@
+[2025 Day 3 (Part 3)] Caught in the middle!
+
+The escalator starts moving, at the beginning very slowly but it quickly reaches a
+speed that would make it very dangerous to use. You and the Elf discuss about the 
+situation and you agree that it is not only dangerous for whoever works here but it
+could break the mechanism so you must act quickly.
+
+- May be we should use a jolt that is higher than the minimum but lower than the
+maximum, a value that is the closest to the average of these two values.
+
+If we take the first battery bank, 987654321111111, its highest value still is 
+987654321111. Its lowest value is 654321111111, so the average is (987654321111 + 
+654321111111) / 2 = 820987716111. The nearest jolt you can build is 854321111111.
+
+Using the example,
+
+   987654321111111
+   811111111111119
+   234234234234278
+   818181911112111
+
+what is the sum of the four jolts which are the nearest to the average of each bank.
+
+(Bonus: try running your program using your own input, but no one will be able to 
+validate your result...)
+
+---
+From: https://www.reddit.com/r/adventofcode/comments/1pddlmv/2025_day_3_part_3_caught_in_the_middle/

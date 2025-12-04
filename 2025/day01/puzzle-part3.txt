@@ -1,0 +1,20 @@
+[2025 Day 1] Part 3 Use the right method!
+
+There is a rapid click-click-click... and then nothing...
+
+You are pretty sure that you have correctly entered the number, so you verify your 
+count and enter it again. Click-click-click...
+
+Something is wrong, definitively wrong. You must proceed with method. Method! 
+What is this strange method mentioned twice in the instructions? You look again at 
+the document and on its back, there is a hand-written note saying "multiply by the
+method". Could it be that each instruction, like L50, must be in fact considered as
+L(50 * 0x434C49434B), or L14452133930150?
+
+Your heart is pounding in your chest while you carefully count the number of times
+any click causes the dial to point at 0, regardless of whether it happens during a
+rotation or at the end of one.
+
+What is the password to open the door?
+---
+From: https://www.reddit.com/r/adventofcode/comments/1pbqvw4/2025_day_1_part_3_use_the_right_method/

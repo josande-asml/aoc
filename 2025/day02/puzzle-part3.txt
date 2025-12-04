@@ -1,0 +1,14 @@
+[2025 day 2] Part 3 One Single Range!
+
+The clerk looks at you in awe.
+
+- I never thought this would be that easy - he said with a clearly reverent tone - 
+and I am wondering whether it would be possible to identify all the wrong product IDs
+between 1 and 2 ** 32 which is the highest product code possible, in order to prevent
+the same mistake in the future.
+
+Using the exact same rules as in part 2, calculate the sum of all the product IDs 
+which are invalid, within the range 1 - 4294967296.
+
+---
+From: https://www.reddit.com/r/adventofcode/comments/1pc9mrg/comment/nrxm7kk/

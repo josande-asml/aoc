@@ -16,7 +16,7 @@ def process(filename):
     # Merge overlapping ranges
     ranges = []
     y = False
-    for (a, b) in sorted(overlapping_ranges, key=lambda x: x[0]):
+    for (a, b) in sorted(overlapping_ranges):
         # does next range overlap current range?
         if y != False and a <= y:
             y = max(y, b)

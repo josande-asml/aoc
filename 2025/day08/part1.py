@@ -58,4 +58,5 @@ def process(filename, nr_connections):
 
 
 assert(process("example.txt", 10) == 40)
-assert(process("input.txt", 1000) == 0)
+assert(process("input.txt", 1000) == 352584)
+

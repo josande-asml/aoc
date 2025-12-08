@@ -53,4 +53,5 @@ def process(filename):
 
 
 assert(process("example.txt") == 25272)
-assert(process("input.txt") == 0)
+assert(process("input.txt") == 9617397716)
+
